@@ -7,6 +7,7 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     inline: true,
+    publicPath: "/build",
     port: 3333
   },
   module: {
