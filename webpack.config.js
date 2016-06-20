@@ -2,8 +2,9 @@ module.exports = {
   entry: './main.jsx',
   output: {
     path: __dirname + '/build',
-    filename: 'index.js'
+    filename: 'bundle.js'
   },
+  devtool: 'source-map',
   devServer: {
     inline: true,
     port: 3333
