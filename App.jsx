@@ -19,13 +19,33 @@ var hardcodedTasks = [
   }
 ];
 
+class TaskFilterItem extends React.Component {
+  render() {
+    if (this.props.isFilterSelected(this.props.id)) {
+      return <span>{this.props.name}</span>
+    } else {
+      return <a onClick={() => this.props.setFilter(this.props.id)}>[{this.props.name}]</a>;
+    }
+  }
+}
+
 class TaskFilters extends React.Component {
   render() {
     return (<div>
-      <button>All</button>
-      <button>Done</button>
-      <button>Undone</button>
-    </div>);
+      Show:
+      <TaskFilterItem setFilter={this.props.setFilter}
+                      isFilterSelected={this.props.isFilterSelected}
+                      name="All"
+                      id="all" />
+      <TaskFilterItem setFilter={this.props.setFilter}
+                      isFilterSelected={this.props.isFilterSelected}
+                      name="Done"
+                      id="done" />
+      <TaskFilterItem setFilter={this.props.setFilter}
+                      isFilterSelected={this.props.isFilterSelected}
+                      name="Undone"
+                      id="undone" />
+    </div>)
   }
 }
 
@@ -49,10 +69,16 @@ class Task extends React.Component {
 class TaskList extends React.Component {
   render() {
     return (<ul>
-              {this.props.tasks.map(task => <Task task={task}
-                                                  key={task.id}
-                                                  removeTask={this.props.removeTask}
-                                                  toggleTask={this.props.toggleTask} />)}
+              {this.props.tasks.map((task) => {
+                if (this.props.taskShouldShow(task)) {
+                  return (<Task task={task}
+                                key={task.id}
+                                removeTask={this.props.removeTask}
+                                toggleTask={this.props.toggleTask} />);
+                } else {
+                  return null;
+                }
+              })}
             </ul>);
   }
 }
@@ -93,8 +119,12 @@ class Todo extends React.Component {
     this.addTask = this.addTask.bind(this);
     this.removeTask = this.removeTask.bind(this);
     this.toggleTask = this.toggleTask.bind(this);
+    this.setFilter = this.setFilter.bind(this);
+    this.isFilterSelected = this.isFilterSelected.bind(this);
+    this.taskShouldShow = this.taskShouldShow.bind(this);
     this.state = {
-      tasks: hardcodedTasks
+      tasks: hardcodedTasks,
+      filter: 'all'
     }
   }
   addTask(title) {
@@ -115,16 +145,34 @@ class Todo extends React.Component {
       this.setState({tasks: newTasks});
     }
   }
+  setFilter(filterId) {
+    this.setState({filter: filterId});
+  }
+  isFilterSelected(filterId) {
+    return this.state.filter === filterId;
+  }
   toggleTask(task) {
     var newTasks = this.state.tasks.slice();
     task.done = !task.done;
     this.setState({tasks: newTasks});
   }
+  taskShouldShow(task) {
+    switch (this.state.filter) {
+      case 'all':
+        return true;
+      case 'done':
+        return task.done;
+      case 'undone':
+        return !task.done;
+    }
+  }
   render() {
     return (<div>
-      <TaskFilters />
+      <TaskFilters setFilter={this.setFilter}
+                   isFilterSelected={this.isFilterSelected}/>
       <TaskList tasks={this.state.tasks}
                 removeTask={this.removeTask}
+                taskShouldShow={this.taskShouldShow}
                 toggleTask={this.toggleTask} />
       <NewTask addTask={this.addTask} />
     </div>);
