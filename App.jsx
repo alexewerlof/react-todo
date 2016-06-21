@@ -1,54 +1,107 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class App extends React.Component {
+var hardcodedTasks = [
+  {
+    title: 'milk the caw',
+    done: false,
+    id: '343434-2323'
+  },
+  {
+    title: 'call doctor',
+    done: true,
+    id: '9329329-233'
+  },
+  {
+    title: 'buy tickets',
+    done: false,
+    id: '122332-23253'
+  }
+];
+
+class TaskFilters extends React.Component {
+  render() {
+    return (<div>
+      <button>All</button>
+      <button>Done</button>
+      <button>Undone</button>
+    </div>);
+  }
+}
+
+class Task extends React.Component {
+  render() {
+    var style = {}
+    if (this.props.done) {
+      style['textDecoration'] = 'line-through';
+    }
+    return (<li style={style}>{this.props.title}</li>);
+  }
+}
+
+class TaskList extends React.Component {
+  render() {
+    return (<ul>
+        {this.props.tasks.map(task => <Task title={task.title}
+                                            done={task.done}
+                                            key={task.id} />)}
+      </ul>);
+  }
+}
+
+class NewTask extends React.Component {
   constructor() {
     super();
     this.state = {
-      red: 0,
-      green: 0,
-      blue: 0
+      value: ''
     }
-    this.update = this.update.bind(this);
+  }
+  keypress(e) {
+    if (e.which === 13) {
+      this.props.addTask(this.state.value);
+      this.setState({value: ''});
+    }
   }
   update(e) {
-    this.setState({
-      red: ReactDOM.findDOMNode(this.refs.red).value,
-      green: ReactDOM.findDOMNode(this.refs.green).value,
-      blue: ReactDOM.findDOMNode(this.refs.blue).value,
-    });
+    this.setState({value: e.target.value});
   }
   render() {
-    var bg = {
-      background: 'rgb(' + this.state.red + ', ' + this.state.green + ', ' + this.state.blue + ')'
+    return (<input type="text" value={this.state.value}
+                   onChange={this.update.bind(this)}
+                   onKeyPress={this.keypress.bind(this)}
+                   placeholder="New task title..." />);
+  }
+}
+
+class Todo extends React.Component {
+  constructor() {
+    super();
+    this.addTask = this.addTask.bind(this);
+    this.state = {
+      tasks: hardcodedTasks
+    }
+  }
+  addTask(title) {
+    var newTask = {
+      title,
+      done: false,
+      id: '029390203' + Math.random()
     };
-    return (
-      <div style={bg}>
-        {this.state.red}, {this.state.green}, {this.state.blue}
-        <br/>
-        <Slider ref="red" update={this.update}></Slider>
-        <Slider ref="green" update={this.update}></Slider>
-        <Slider ref="blue" update={this.update}></Slider>
-      </div>
-    )
+    this.setState({tasks: this.state.tasks.concat(newTask)})
+  }
+  render() {
+    return (<div>
+      <TaskFilters />
+      <TaskList tasks={this.state.tasks} />
+      <NewTask addTask={this.addTask} />
+    </div>);
   }
 }
 
-App.propTypes = {
-  txt: React.PropTypes.string,
-  cat: React.PropTypes.number.isRequired
-}
-
-App.defaultProps = {
-  txt: 'default text'
-}
-
-class Slider extends React.Component {
+class App extends React.Component {
   render() {
-    return <input type="range" min="0" max="255" onChange={this.props.update} />;
+    return <Todo />;
   }
 }
 
 export default App;
-
-ReactDOM.render(<App txt="this is the prop text 8" cat={5} />, document.getElementById('app'));
