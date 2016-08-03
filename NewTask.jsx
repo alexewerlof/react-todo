@@ -1,4 +1,5 @@
 import React from 'react';
+import store from './store.js';
 
 export default class NewTask extends React.Component {
   constructor() {
@@ -11,7 +12,7 @@ export default class NewTask extends React.Component {
   }
   keypress(e) {
     if (e.which === 13) {
-      this.props.addTask(this.state.value);
+      store.dispatch({type: 'TASK-NEW', title: this.state.value});
       this.setState({value: ''});
     }
   }

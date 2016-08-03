@@ -1,18 +1,20 @@
 import React from 'react';
+import store from './store.js';
 
-export default class Task extends React.Component {
-  render() {
-    var style = {}
-    if (this.props.task.done) {
-      style.textDecoration = 'line-through';
-    }
-    return (<li>
-              <span style={style}
-                    onClick={() => this.props.toggleTask(this.props.task)}>
-                    {this.props.task.title}</span>
-                &nbsp;
-                <button title="Remove"
-                        onClick={() => this.props.removeTask(this.props.task)}>X</button>
-            </li>);
+export default function Task(props) {
+  var style = {}
+  if (props.task.done) {
+    style.textDecoration = 'line-through';
   }
+  return (<li>
+            <span style={style}
+                  title={props.task.id}
+                  onClick={() => store.dispatch({type: 'TASK-TOGGLE', taskId: props.task.id})}>
+                  {props.task.title}</span>
+              &nbsp;
+              <button title="Remove"
+                      onClick={() => store.dispatch({type: 'TASK-REMOVE', taskId: props.task.id})}>
+                      X
+              </button>
+          </li>);
 }
