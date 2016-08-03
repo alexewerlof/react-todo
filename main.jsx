@@ -1,38 +1,13 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import App from './App.jsx';
-import {createStore} from 'redux';
+import Todo from './Todo.jsx';
+import store from './store.js';
 
-const oneStore = {
-  tasks: [
-    {
-      title: 'milk the caw',
-      done: false,
-      id: '343434-2323'
-    },
-    {
-      title: 'call doctor',
-      done: true,
-      id: '9329329-233'
-    },
-    {
-      title: 'buy tickets',
-      done: false,
-      id: '122332-23253'
-    }
-  ],
-  filter: ''
-};
-
-function reducer (state, action) {
-  switch (action) {
-    case 'CHANGE_FILTER':
-      return {tasks: state.tasks, filter: action.filter}
-    default:
-      return oneStore;
-  }
+function render() {
+  ReactDOM.render(
+    <Todo value={store.getState()}/>,
+    document.getElementById('app')
+  );
 }
-
-const store = createStore(reducer);
-
-ReactDOM.render(<App />, document.getElementById('app'));
+store.subscribe(render);
+render();

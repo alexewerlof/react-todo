@@ -2,18 +2,28 @@ import React from 'react';
 import Task from './Task.jsx';
 
 export default class TaskList extends React.Component {
+
   render() {
-    return (<ul>
-              {this.props.tasks.map((task) => {
-                if (this.props.taskShouldShow(task)) {
-                  return (<Task task={task}
-                                key={task.id}
-                                removeTask={this.props.removeTask}
-                                toggleTask={this.props.toggleTask} />);
-                } else {
-                  return null;
-                }
-              })}
-            </ul>);
+
+    var filter = this.props.value.filter;
+    function taskShouldShow(task) {
+      switch (filter) {
+        case 'all':
+          return true;
+        case 'done':
+          return task.done;
+        case 'undone':
+          return !task.done;
+      }
+    }
+
+    return <ul>
+              {
+                this.props.value.tasks
+                  .filter(taskShouldShow)
+                  .map(task => <Task task={task} key={task.id} />)
+              }
+           </ul>;
   }
+
 }

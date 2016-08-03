@@ -1,4 +1,5 @@
 import React from 'react';
+import store from './store.js';
 
 export default class Task extends React.Component {
   render() {
@@ -8,11 +9,14 @@ export default class Task extends React.Component {
     }
     return (<li>
               <span style={style}
-                    onClick={() => this.props.toggleTask(this.props.task)}>
+                    title={this.props.task.id}
+                    onClick={() => store.dispatch({type: 'TASK-TOGGLE', taskId: this.props.task.id})}>
                     {this.props.task.title}</span>
                 &nbsp;
                 <button title="Remove"
-                        onClick={() => this.props.removeTask(this.props.task)}>X</button>
+                        onClick={() => store.dispatch({type: 'TASK-REMOVE', taskId: this.props.task.id})}>
+                        X
+                </button>
             </li>);
   }
 }

@@ -1,5 +1,6 @@
 {
-  "name": "react8",
+  "name": "react-todo",
+  "description": "A react todo application, nothing special",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node-uuid": "^1.4.7",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "redux": "^3.5.2"
