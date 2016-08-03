@@ -4,10 +4,9 @@ import Task from './Task.jsx';
 export default class TaskList extends React.Component {
 
   render() {
-
-    var filter = this.props.value.filter;
+    var currentFilter = this.props.value.filter;
     function taskShouldShow(task) {
-      switch (filter) {
+      switch (currentFilter) {
         case 'all':
           return true;
         case 'done':
