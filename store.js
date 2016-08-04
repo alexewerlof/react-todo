@@ -34,34 +34,32 @@ function toggleTask(tasks, taskId) {
     tasks = tasks.slice();
     var oldTask = tasks[index];
     // Replace that particulat task with a new task that has a reversed done
-    tasks[index] = {
-      title: oldTask.title,
-      done: !oldTask.done,
-      id: oldTask.id
-    };
+    tasks[index] = newModifiedObject(oldTask, {done: !oldTask.done});
   }
   return tasks;
+}
+
+// Makes a new object from the original object with what is modified in what
+function newModifiedObject(originalObject, whatChangedObject) {
+  return Object.assign({}, originalObject, whatChangedObject);
 }
 
 function reducer (state = INIT_STORE, action) {
   switch (action.type) {
     case 'SET_FILTER':
       if (state.filter !== action.filter) {
-        return {tasks: state.tasks, filter: action.filter};
+        return newModifiedObject(state, {filter: action.filter});
       } else {
         return state;
       }
     case 'TASK-TOGGLE':
-      return {tasks: toggleTask(state.tasks, action.taskId), filter: state.filter};
+      return newModifiedObject(state, {tasks: toggleTask(state.tasks, action.taskId)});
     case 'TASK-REMOVE':
-      return {tasks: removeTask(state.tasks, action.taskId), filter: state.filter};
+      return newModifiedObject(state, {tasks: removeTask(state.tasks, action.taskId)});
     case 'TASK-NEW':
       var newTasks = state.tasks.slice();
       newTasks.push(new Task(action.title));
-      return {
-        tasks: newTasks,
-        filter: state.filter
-      };
+      return newModifiedObject(state, {tasks: newTasks});
     default:
       return state;
   }
