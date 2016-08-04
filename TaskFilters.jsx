@@ -4,16 +4,10 @@ import TaskFilterItem from './TaskFilterItem.jsx';
 export default function TaskFilters(props) {
   return (<div>
     Show:
-    <TaskFilterItem value={props.value}
-                    name="All"
-                    id="all" />
-    <span> </span>
-    <TaskFilterItem value={props.value}
-                    name="Done"
-                    id="done" />
-    <span> </span>
-    <TaskFilterItem value={props.value}
-                    name="Undone"
-                    id="undone" />
+    <TaskFilterItem filter="all" value={props.value}>All</TaskFilterItem>
+    {' '}
+    <TaskFilterItem filter="done" value={props.value}>Done</TaskFilterItem>
+    {' '}
+    <TaskFilterItem filter="undone" value={props.value}>Undone</TaskFilterItem>
   </div>);
 }
