@@ -7,11 +7,13 @@ export default function TaskFilters(props) {
     <TaskFilterItem value={props.value}
                     name="All"
                     id="all" />
+    <span> </span>
     <TaskFilterItem value={props.value}
                     name="Done"
                     id="done" />
+    <span> </span>
     <TaskFilterItem value={props.value}
                     name="Undone"
                     id="undone" />
-                </div>);
+  </div>);
 }
