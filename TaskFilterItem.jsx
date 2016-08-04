@@ -6,7 +6,10 @@ export default function TaskFilterItem(props) {
   if (currentFilter === props.id) {
     return <span>{props.name}</span>;
   } else {
-    return <a href='#' onClick={() => store.dispatch({type: 'SET_FILTER', filter: props.id})}>
+    return <a href='#' onClick={e => {
+        e.preventDefault();
+        store.dispatch({type: 'SET_FILTER', filter: props.id});
+      }}>
       {props.name}
     </a>;
   }
