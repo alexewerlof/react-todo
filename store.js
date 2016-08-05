@@ -31,6 +31,6 @@ function reducer (state = INIT_STORE, action) {
   }
 }
 
-const store = createStore(reducer);
+const store = createStore(reducer, window.devToolsExtension && window.devToolsExtension());
 
 export default store;
