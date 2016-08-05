@@ -1,43 +1,15 @@
 import {createStore} from 'redux';
-import uuid from 'node-uuid';
-
-class Task {
-  constructor(title = '', done = false, id) {
-    this.title = title;
-    this.done = done;
-    this.id = id || uuid.v4();
-  }
-}
+import {setFilter, taskRemove, toggleTask, taskNew} from './reducers';
+import TaskClass from './TaskClass';
 
 const INIT_STORE = {
   tasks: [
-    new Task('milk the caws who are awesome'),
-    new Task('call doctor', true),
-    new Task('buy tickets')
+    new TaskClass('milk the caws who are awesome'),
+    new TaskClass('call doctor', true),
+    new TaskClass('buy tickets')
   ],
   filter: 'all'
 };
-
-function removeTask(tasks, taskId) {
-  var index = tasks.findIndex(task => task.id === taskId);
-  if (index !== -1) {
-    tasks = tasks.slice();
-    // remove the task on that index
-    tasks.splice(index, 1);
-  }
-  return tasks;
-}
-
-function toggleTask(tasks, taskId) {
-  var index = tasks.findIndex(task => task.id === taskId);
-  if (index !== -1) {
-    tasks = tasks.slice();
-    var oldTask = tasks[index];
-    // Replace that particulat task with a new task that has a reversed done
-    tasks[index] = newModifiedObject(oldTask, {done: !oldTask.done});
-  }
-  return tasks;
-}
 
 // Makes a new object from the original object with what is modified in what
 function newModifiedObject(originalObject, whatChangedObject) {
@@ -47,19 +19,13 @@ function newModifiedObject(originalObject, whatChangedObject) {
 function reducer (state = INIT_STORE, action) {
   switch (action.type) {
     case 'SET_FILTER':
-      if (state.filter !== action.filter) {
-        return newModifiedObject(state, {filter: action.filter});
-      } else {
-        return state;
-      }
+      return newModifiedObject(state, {filter: setFilter(state.filter, action.filter)});
     case 'TASK-TOGGLE':
-      return newModifiedObject(state, {tasks: toggleTask(state.tasks, action.taskId)});
+      return newModifiedObject(state, {tasks: taskToggle(state.tasks, action.taskId)});
     case 'TASK-REMOVE':
-      return newModifiedObject(state, {tasks: removeTask(state.tasks, action.taskId)});
+      return newModifiedObject(state, {tasks: taskRemove(state.tasks, action.taskId)});
     case 'TASK-NEW':
-      var newTasks = state.tasks.slice();
-      newTasks.push(new Task(action.title));
-      return newModifiedObject(state, {tasks: newTasks});
+      return newModifiedObject(state, {tasks: taskNew(state.tasks, action.title)});
     default:
       return state;
   }
