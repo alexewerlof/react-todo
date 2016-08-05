@@ -1,5 +1,6 @@
 import React from 'react';
-import store from './store.js';
+import store from './store';
+import {taskToggle, taskRemove} from './actionCreators'
 
 export default function Task(props) {
   var style = {}
@@ -9,11 +10,11 @@ export default function Task(props) {
   return (<li>
             <span style={style}
                   title={props.task.id}
-                  onClick={() => store.dispatch({type: 'TASK-TOGGLE', taskId: props.task.id})}>
+                  onClick={() => store.dispatch(taskToggle(props.task.id))}>
                   {props.task.title}</span>
               &nbsp;
               <button title="Remove"
-                      onClick={() => store.dispatch({type: 'TASK-REMOVE', taskId: props.task.id})}>
+                      onClick={() => store.dispatch(taskRemove(props.task.id))}>
                       X
               </button>
           </li>);

@@ -1,5 +1,6 @@
 import React from 'react';
-import store from './store.js';
+import store from './store';
+import {setFilter} from './actionCreators';
 
 export default function TaskFilterItem({filter, children}) {
   var currentFilter = store.getState().filter;
@@ -8,7 +9,7 @@ export default function TaskFilterItem({filter, children}) {
   } else {
     return <a href='#' onClick={e => {
         e.preventDefault();
-        store.dispatch({type: 'SET_FILTER', filter});
+        store.dispatch(setFilter(filter));
       }}>
       {children}
     </a>;

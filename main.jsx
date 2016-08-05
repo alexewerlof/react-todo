@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import Todo from './Todo.jsx';
-import store from './store.js';
+import store from './store';
 
 function render() {
   ReactDOM.render(
