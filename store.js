@@ -1,5 +1,5 @@
 import {createStore} from 'redux';
-import {setFilter, taskRemove, toggleTask, taskNew} from './reducers';
+import {setFilter, taskRemove, taskToggle, taskNew} from './reducers';
 import TaskClass from './TaskClass';
 
 const INIT_STORE = {
@@ -19,13 +19,13 @@ function newModifiedObject(originalObject, whatChangedObject) {
 function reducer (state = INIT_STORE, action) {
   switch (action.type) {
     case 'SET_FILTER':
-      return newModifiedObject(state, {filter: setFilter(state.filter, action.filter)});
+      return newModifiedObject(state, {filter: setFilter(state.filter, action.payload)});
     case 'TASK-TOGGLE':
-      return newModifiedObject(state, {tasks: taskToggle(state.tasks, action.taskId)});
+      return newModifiedObject(state, {tasks: taskToggle(state.tasks, action.payload)});
     case 'TASK-REMOVE':
-      return newModifiedObject(state, {tasks: taskRemove(state.tasks, action.taskId)});
+      return newModifiedObject(state, {tasks: taskRemove(state.tasks, action.payload)});
     case 'TASK-NEW':
-      return newModifiedObject(state, {tasks: taskNew(state.tasks, action.title)});
+      return newModifiedObject(state, {tasks: taskNew(state.tasks, action.payload)});
     default:
       return state;
   }

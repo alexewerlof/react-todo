@@ -15,13 +15,13 @@ export function taskRemove(tasks, taskId) {
   return tasks;
 }
 
-export function toggleTask(tasks, taskId) {
+export function taskToggle(tasks, taskId) {
   var index = tasks.findIndex(task => task.id === taskId);
   if (index !== -1) {
     tasks = tasks.slice();
     var oldTask = tasks[index];
     // Replace that particulat task with a new task that has a reversed done
-    tasks[index] = newModifiedObject(oldTask, {done: !oldTask.done});
+    tasks[index] = Object.assign({}, oldTask, {done: !oldTask.done});
   }
   return tasks;
 }
