@@ -1,11 +1,11 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import Todo from './Todo.jsx';
+import TodoApp from './TodoApp.jsx';
 import store from './store';
 
 function render() {
   ReactDOM.render(
-    <Todo value={store.getState()}/>,
+    <TodoApp value={store.getState()}/>,
     document.getElementById('app')
   );
 }

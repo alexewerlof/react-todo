@@ -3,7 +3,7 @@ import TaskFilters from './TaskFilters.jsx';
 import TaskList from './TaskList.jsx';
 import NewTask from './NewTask.jsx';
 
-export default function Todo(props) {
+export default function TodoApp (props) {
   return (<div>
     <TaskFilters />
     <TaskList value={props.value} />
